@@ -31,13 +31,13 @@ class Flags:
     
 class Payload:
     def __init__(self):
-        from main import Settings, START_TIMESTAMP
+        from main import Settings
         from requests import Request, Session, Response
         self._session: Session = Session()
         self._request: Request = Request(method="POST", url=Settings.ServerEndpoint or "placeholder")
         self._response: Response | None = None
 
-        self._body: list[tuple] = [("timestamp", START_TIMESTAMP)]
+        self._body: list[tuple] = []
         self._mock: bool = False if (Settings.ServerEndpoint) else True
 
 
