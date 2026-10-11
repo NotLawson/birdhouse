@@ -3,6 +3,7 @@
 ## Definitions ##
 from ipaddress import IPv4Address
 from datetime import datetime as dt, timedelta as td
+import board
 class Settings:
     class PinMap:
         DHT: board.pin = board.D17 # type: ignore
@@ -22,7 +23,7 @@ class Settings:
 ## BEGIN ##
 if __name__ == "__main__":
     # Start RTC & save current timestamp
-    import board, adafruit_ds3231
+    import adafruit_ds3231
     RTC = adafruit_ds3231.DS3231(board.I2C())
     START_TIMESTAMP = dt(year=RTC.datetime.tm_year, month=RTC.datetime.tm_mon, day=RTC.datetime.tm_mday, hour=RTC.datetime.tm_hour, minute=RTC.datetime.tm_min)
 
