@@ -57,7 +57,7 @@ class Payload:
             from json import dump, dumps
 
             from __main__ import START_TIMESTAMP
-            dump(self._body, open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y %H:%M:%S'),}/data.json", "w"))
+            dump(self._body, open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S'),}/data.json", "w"))
             if "video" in self._files.keys():
                 open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S')}/clip.mp4", "wb").write(self._files["video"].getbuffer())
             
