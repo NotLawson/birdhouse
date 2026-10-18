@@ -4,13 +4,13 @@
 from ipaddress import IPv4Address
 from datetime import datetime as dt, timedelta as td
 import board
-import logging
+import logging as log
 import sys
 
 
-log = logging.getLogger(__name__)
-if (len(sys.argv[1:]) > 0) and sys.argv[1] == "--debug": log.setLevel(logging.DEBUG)
-else: log.setLevel(logging.INFO)
+
+if (len(sys.argv[1:]) > 0) and sys.argv[1] == "--debug": log.basicConfig(level=log.DEBUG)
+else: log.basicConfig(level=log.INFO)
 log.info("birdhouse client")
 
 class Settings:
