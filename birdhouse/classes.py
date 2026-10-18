@@ -55,11 +55,15 @@ class Payload:
         if self._mock:
             from requests import Response
             from json import dump, dumps
+            from pathlib import Path
 
             from __main__ import START_TIMESTAMP
-            dump(self._body, open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S'),}/data.json", "w"))
+            data = Path(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S')}/data.json")
+            data.parent.mkdir(parents=True, exist_ok=True)
+            dump(self._body, data.open("w"))
             if "video" in self._files.keys():
-                open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S')}/clip.mp4", "wb").write(self._files["video"].getbuffer())
+                video = Path(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y-%H:%M:%S')}/clip.mp4")
+                video.open("wb").write(self._files["video"].getbuffer())
             
             self._response = Response()
             self._response.status_code = 200
