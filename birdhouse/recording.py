@@ -22,7 +22,7 @@ def record():
         ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
-        stderr=sys.stderr
+        stderr=subprocess.DEVNULL
     )
     time.sleep(0.5)
 
@@ -40,7 +40,7 @@ def record():
             "-o", "-",
         ], 
         stdout=ffmpeg_proc.stdin, 
-        stderr=sys.stderr
+        stderr=subprocess.DEVNULL
     )
 
     mp4_buffer = io.BytesIO()
