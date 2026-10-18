@@ -48,6 +48,7 @@ class Payload:
     
     from io import BytesIO
     def video(self, file: BytesIO) -> None:
+        file.seek(0) # reset to beginning of stream
         self._files = {"video": file}
         return
 
