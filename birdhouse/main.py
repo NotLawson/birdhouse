@@ -18,9 +18,9 @@ class Settings:
         DHT: board.pin = board.D17 # type: ignore
         PIR: board.pin = board.D18 # type: ignore
         # Control Pins:
-        EmergencyPowerFlag: board.pin = board.D19 # type: ignore
-        PowerIndicatorFlag: board.pin = board.D20 # type: ignore
-        TriggerIndicatorFlag: board.pin = board.D21 # type: ignore
+        EmergencyPowerFlag: board.pin = board.D26 # type: ignore
+        PowerIndicatorFlag: board.pin = board.D26 # type: ignore
+        TriggerIndicatorFlag: board.pin = board.D26 # type: ignore
 
     ServerEndpoint: str | None = None
     IP: IPv4Address = IPv4Address("10.0.0.217")
