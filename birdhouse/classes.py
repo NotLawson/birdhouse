@@ -47,19 +47,27 @@ class Payload:
     
     from io import BytesIO
     def video(self, file: BytesIO) -> None:
-        self._request.files = {"video": file}
+        self._files = {"video": file}
         return
 
     def push(self):
         # submit payload to server
         if self._mock:
             from requests import Response
-            from json import dumps
+            from json import dump, dumps
+
+            from __main__ import START_TIMESTAMP
+            dump(self._body, open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y %H:%M:%S')}/data.json"))
+            if "video" in self._files.keys():
+                open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y %H:%M:%S')}/clip.mp4", "wb").write(self._files["video"].getbuffer())
+            open(f"mocks/{START_TIMESTAMP.strftime('%d-%m-%Y %H:%M:%S')}/clip.json")
+            
             self._response = Response()
             self._response.status_code = 200
             self._response._content = dumps({"message":"Successfully Submitted Payload"}).encode("utf-8")
             return self._response
         self._request.data = self._body
+        self._request.files = self._files
         return self._session.send(self._request.prepare())
 
     @property
