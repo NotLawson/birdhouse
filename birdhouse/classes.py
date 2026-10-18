@@ -38,6 +38,7 @@ class Payload:
         self._response: Response | None = None
 
         self._body: list[tuple] = []
+        self._files: dict = {}
         self._mock: bool = False if (Settings.ServerEndpoint) else True
 
 
