@@ -10,9 +10,14 @@ motion = digitalio.DigitalInOut(board.D25) # type: ignore
 motion.direction = digitalio.Direction.INPUT
 
 while True:
-    if motion.value:
-        print("button!")
-        time.sleep(5)
-        #sp.run(["python3", "main.py"])
-    else:
-        time.sleep(0.1)
+    try:
+        if motion.value:
+            print("Button pressed! Starting...")
+            sp.run(["python3", "main.py"])
+            time.sleep(5)
+            print("off cooldown")
+        else:
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        break
+print("Goodbye!")
