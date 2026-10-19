@@ -3,6 +3,7 @@
 
 import subprocess as sp
 import board, digitalio
+import sys
 import time
 
 motion = digitalio.DigitalInOut(board.D25) # type: ignore
@@ -13,7 +14,7 @@ while True:
     try:
         if motion.value:
             print("Button pressed! Starting...")
-            sp.run(["python3", "main.py"])
+            sp.run([sys.executable, "main.py"])
             time.sleep(5)
             print("off cooldown")
         else:
