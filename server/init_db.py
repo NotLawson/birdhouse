@@ -5,6 +5,7 @@ cu = cx.cursor()
 
 # log table
 q = '''CREATE TABLE IF NOT EXISTS log (
+    uuid TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     lux NUMERIC,
     temperature NUMERIC,
