@@ -1,24 +1,26 @@
 # Small Example Server. Not fully featured
-from flask import Flask, jsonify, request, make_response, abort, send_file
+from flask import Flask, jsonify, request, make_response, abort, send_file, render_template
 from flask import Response, Request
 from datetime import datetime as dt
 import sqlite3
 import os, uuid, pathlib
 import regex as re
+import logging
 
 app = Flask(__name__)
+app.logger.setLevel(logging.INFO)
 
 @app.errorhandler(400)
-def error400(msg: str = "Bad Request"):
+def error400(e):
     return jsonify({
-        "msg": msg,
+        "msg": e.description,
         "code": 400
     }), 400
 
 @app.errorhandler(404)
-def error404(msg: str = "not found"):
+def error404(e):
     return jsonify({
-        "msg": msg,
+        "msg": e.description,
         "code": 404
     }), 404
 
@@ -42,8 +44,10 @@ def submit():
         CX.commit()
         CX.close()
     else:
-        abort(400, msg="wrong method; please use POST")
+        abort(400, "wrong method; please use POST")
 
+    # log event to console
+    app.logger.info("New upload! See http://127.0.0.1:5000/view/" + str(submission_id))
     return jsonify({
         "msg": "Saved!",
         "code": 200
@@ -53,7 +57,18 @@ def submit():
 def video(file):
     path = pathlib.Path("video/" + file)
     if not path.exists():
-        abort(404)
+        abort(404, "video not found")
     return send_file(path.open("rb"), download_name="clip.mp4")
 
-app.run("0.0.0.0", 5000)
+@app.route("/view/<id>")
+def view(id):
+    CX = sqlite3.connect("data.db")
+    cu = CX.cursor()
+    cu.execute("SELECT lux, temperature, humidity, trigger, timestamp FROM log WHERE uuid='" + id + "';")
+    results = cu.fetchall()
+    if len(results) > 0:
+        path = pathlib.Path("video/" + id + ".mp4")
+        return render_template("view.html", id=str(id), title=str(id), data=results[0], exists=path.exists())
+    abort(404, "Not found")
+
+app.run("0.0.0.0", 5000, debug=True)
